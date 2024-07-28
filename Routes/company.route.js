@@ -1,5 +1,5 @@
 import express from "express";
-import { uploadCompanyLogo, newJobPost, updateJob, allJobs, getJobById, deleteJob, addService, updateService, getAllServices, deleteService } from "../controllers/company.controller"
+import { uploadCompanyLogo, newJobPost, updateJob, allJobs, getJobById, deleteJob, addService, updateService, getAllServices, deleteService, contactUs, updateContactedStatus } from "../controllers/company.controller"
 import { isAuthenticated } from "../middlewares/auth"
 import { upload, productImgResize } from "../middlewares/uploadImages";
 
@@ -19,5 +19,9 @@ companyRouter.get('/services', getAllServices)
 companyRouter.post('/addservice', isAuthenticated, addService)
 companyRouter.put('/updateservice/:id', isAuthenticated, updateService)
 companyRouter.delete('/deleteservice/:id', isAuthenticated, deleteService)
+
+// ? Contact Us page
+companyRouter.post('/contact', contactUs)
+companyRouter.put('/updatecontact/:id', updateContactedStatus)
 
 export default companyRouter

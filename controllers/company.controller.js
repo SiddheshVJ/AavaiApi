@@ -2,7 +2,11 @@ import { Logo, Job, Contact, Service, Project, Gallery } from "../models/company
 import { cloudinaryUploadImg, cloudinaryDeleteImg } from '../utils/cloudinary'
 import asyncHandler from "express-async-handler"
 import fs from "fs"
+import ejs from 'ejs';
+import path from "path";
 import createHttpError from "http-errors"
+import sendMail from "../utils/sendMail"
+import { validateMongoDbId } from "../utils/validMongoId";
 
 // ! Upload and update logo
 export const uploadCompanyLogo = asyncHandler(async (req, res) => {
@@ -178,3 +182,57 @@ export const deleteService = asyncHandler(async (req, res) => {
         res.status(500).json({ message: 'Error while deleting services', error: err.message });
     }
 })
+
+// ! Contact use 
+
+export const contactUs = asyncHandler(async (req, res) => {
+    try {
+        let { name, email, phone, description } = req.body
+        if (!name || !email || !phone || !description) throw createHttpError.UnprocessableEntity('Please fill all fields.')
+
+        // ? Send Email
+        const data = { name, description, phone };
+        const html = await ejs.renderFile(
+            path.join(__dirname, "../mails/emailToClient.ejs"),
+            data
+        );
+
+        try {
+            await sendMail({
+                email: email,
+                subject: "Your Inquiry Received.",
+                template: "emailToClient.ejs",
+                data,
+            });
+
+            const inquiry = new Contact({ name, email, description, phone });
+            await inquiry.save();
+
+            res.status(201).json({
+                success: true,
+                message: `Please check your email !`,
+            });
+        } catch (error) {
+            res.status(500).json({ message: "Something went wrong", error: error.message })
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong", error: error.message })
+    }
+})
+
+export const updateContactedStatus = asyncHandler(async (req, res) => {
+    try {
+        const { id } = req.params;
+        validateMongoDbId(id)
+        const inquiry = await Contact.findById(id);
+        if (!inquiry) {
+            throw createHttpError.NotFound('Inquiry not found');
+        }
+
+        inquiry.contacted === true ? inquiry.contacted = false : inquiry.contacted = true
+        await inquiry.save();
+        res.status(200).json({ message: "Inquiry status updated successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong", error: error.message });
+    }
+});

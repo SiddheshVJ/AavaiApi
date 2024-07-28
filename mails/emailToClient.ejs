@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>E-Learning Activation Email</title>
+    <title>Contact Us Confirmation Email</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style type="text/css">
@@ -14,12 +14,12 @@
             font-family: Arial, sans-serif;
             font-size: 16px;
             line-height: 1.5;
-            background-color: #FAFAFA;
-            color: #222222;
+            background-color: #f4f4f4;
+            color: #333;
         }
 
         a {
-            color: #000;
+            color: #007bff;
             text-decoration: none;
         }
 
@@ -30,6 +30,7 @@
             margin-top: 0;
             margin-bottom: 15px;
             text-align: center;
+            color: #ffffff;
         }
 
         p {
@@ -45,28 +46,36 @@
         .email-wrapper {
             max-width: 600px;
             margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .email-header {
-            background-color: #0070f3;
+            background-color: #4CAF50;
             padding: 24px;
             color: #ffffff;
         }
 
         .email-body {
             padding: 24px;
-            background-color: #ffffff;
         }
 
         .email-footer {
-            background-color: #f6f6f6;
+            background-color: #f4f4f4;
             padding: 24px;
+            text-align: center;
+        }
+
+        .email-footer a {
+            color: #007bff;
         }
 
         /* Buttons */
         .button {
             display: inline-block;
-            background-color: #0070f3;
+            background-color: #007bff;
             color: #ffffff;
             font-size: 16px;
             font-weight: 700;
@@ -81,22 +90,30 @@
 <body>
     <div class="email-wrapper">
         <div class="email-header">
-            <h1>Welcome to E-Learning</h1>
+            <h1>Thank you for contacting us!</h1>
         </div>
         <div class="email-body">
-            <p>Hello <%= user.name %>,</p>
-            <p>Thank you for registering with E-Learning. To activate your account, please use the following activation
-                code:
+            <p>Hello <%= name %>,</p>
+            <p>We have received your inquiry and will get back to you as soon as possible. Your request is important to
+                us, and we are committed to providing you with the best service.</p>
+            <p><strong>Summary of your request:</strong></p>
+            <p><strong>Name:</strong>
+                <%= name %>
             </p>
-            <h2>
-                <%= activationCode %>
-            </h2>
-            <p>Please enter this code on the activation page within the next 5 minutes.</p>
-            <p>If you did not register for a E-Learning account, please ignore this email.</p>
+            <p><strong>Phone:</strong>
+                <%= phone %>
+            </p>
+            <p><strong>Description:</strong>
+                <%= description %>
+            </p>
+            <p>If you need to add any more details or have additional questions, please feel free to reply to this
+                email.</p>
+            <p>Thank you for your patience.</p>
         </div>
         <div class="email-footer">
-            <p>If you have any questions, please don't hesitate to contact us at <a
-                    href="siddheh.jadhav.info@gmail.com">siddheh.jadhav.info.@gmail.com</a></p>
+            <p>If you have any questions, feel free to reach out to us at <a
+                    href="mailto:aavaitech@gmail.com">aavaitech@gmail.com</a></p>
+            <p>Best regards,<br>Aavai Tech pvt ltd</p>
         </div>
     </div>
 </body>
