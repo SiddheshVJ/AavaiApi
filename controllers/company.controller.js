@@ -70,6 +70,7 @@ export const updateJob = asyncHandler(async (req, res) => {
     let jobId = req.params.id
     let jobData = req.body
     try {
+        validateMongoDbId(jobId)
         let jobExists = await Job.findById({ _id: jobId })
 
         if (!jobExists) throw createHttpError.NotFound('Job not found')
@@ -102,6 +103,7 @@ export const allJobs = asyncHandler(async (req, res) => {
 export const deleteJob = asyncHandler(async (req, res) => {
     try {
         let jobId = req.params.id
+        validateMongoDbId(jobId)
         if (!jobId) throw createHttpError.NotFound('PleaseF select job.')
 
         let deleteJob = await Job.findByIdAndDelete({ _id: jobId })
@@ -112,9 +114,12 @@ export const deleteJob = asyncHandler(async (req, res) => {
         res.status(500).json({ message: 'Job not found', error: error.message })
     }
 })
+
 export const getJobById = asyncHandler(async (req, res) => {
     try {
         let jobId = req.params.id
+        validateMongoDbId(jobId)
+        validateMongoDbId(id)
         if (!jobId) throw createHttpError.NotFound('Please select job.')
 
         let foundJob = await Job.findById({ _id: jobId })
@@ -144,8 +149,8 @@ export const addService = asyncHandler(async (req, res) => {
 export const updateService = asyncHandler(async (req, res) => {
     let serviceId = req.params.id
     let updateService = req.body
-    console.log(updateService.title)
     try {
+        validateMongoDbId(serviceId)
         let service = await Service.findById({ _id: serviceId })
         if (!service) throw createHttpError.NotFound("Service Not found");
 
@@ -175,6 +180,7 @@ export const getAllServices = asyncHandler(async (req, res) => {
 export const deleteService = asyncHandler(async (req, res) => {
     try {
         let serviceId = req.params.id
+        validateMongoDbId(serviceId)
         let deletedService = await Service.findByIdAndDelete({ _id: serviceId })
         if (!deletedService) throw createHttpError.NotFound()
         res.status(200).json({ message: "Success", deletedService })
