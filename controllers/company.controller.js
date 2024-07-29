@@ -1,4 +1,4 @@
-import { Logo, Job, Contact, Service, Project, Gallery } from "../models/company.model"
+import { Logo, Job, Contact, Service, Project } from "../models/company.model"
 import { cloudinaryUploadImg, cloudinaryDeleteImg } from '../utils/cloudinary'
 import asyncHandler from "express-async-handler"
 import fs from "fs"
@@ -47,6 +47,18 @@ export const uploadCompanyLogo = asyncHandler(async (req, res) => {
         res.status(500).json({ message: 'Error uploading logo', error: err.message });
     }
 });
+
+export const getLogo = asyncHandler(async (req, res) => {
+    try {
+        let logUrl = await Logo.find()
+        if (!logUrl) throw createHttpError.NotFound();
+        let url = logUrl[0].logoUrl
+
+        res.status(200).json(url)
+    } catch (error) {
+        res.status(200).json({ message: "failed", error: error.message })
+    }
+})
 
 //! Job Page Get all jobs, get job by ID, Add new job ,Update job, delete job 
 export const newJobPost = asyncHandler(async (req, res) => {
