@@ -53,7 +53,6 @@ export const getLogo = asyncHandler(async (req, res) => {
         let logUrl = await Logo.find()
         if (!logUrl) throw createHttpError.NotFound();
         let url = logUrl[0].logoUrl
-
         res.status(200).json(url)
     } catch (error) {
         res.status(200).json({ message: "failed", error: error.message })
